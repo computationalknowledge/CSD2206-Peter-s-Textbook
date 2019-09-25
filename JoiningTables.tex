@@ -1,0 +1,24 @@
+\section{Joining Tables}
+
+Predicate Joins are a sub set of CONDITIONS in SQL Clauses.
+
+\subsection{Is there any difference (performance, best-practice, etc...) between putting a condition in the JOIN clause vs. the WHERE clause?}
+
+\begin{verbatim}
+    -- Condition in JOIN
+SELECT *
+FROM dbo.Customers AS CUS
+INNER JOIN dbo.Orders AS ORD 
+ON CUS.CustomerID = ORD.CustomerID
+AND CUS.FirstName = 'John'
+
+-- Condition in WHERE
+SELECT *
+FROM dbo.Customers AS CUS
+INNER JOIN dbo.Orders AS ORD 
+ON CUS.CustomerID = ORD.CustomerID
+WHERE CUS.FirstName = 'John'
+
+Which do you prefer (and perhaps why)?
+
+\end{verbatim}

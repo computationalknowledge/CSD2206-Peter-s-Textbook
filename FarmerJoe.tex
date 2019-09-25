@@ -1,3 +1,26 @@
+\section  * {Farmer Joe}
+\includegraphics[scale=0.6]{images/FarmerJoe.png}
+
+\section{DDL to generate the Tables}
+\begin{verbatim}
+CREATE TABLE lots (
+lot_id varchar(20),
+quantity_of_vegatables int,
+veggie_id varchar(20),
+lot_name varchar(20),
+PRIMARY KEY (lot_id)
+);
+
+CREATE TABLE veggies(
+veggie_id varchar(20),
+veggie_price money,
+veggie_name varchar(20),
+veggie_type varchar(20)
+PRIMARY KEY (veggie_id)
+);
+\end{verbatim}
+
+
 \section {Farmer Joe Exercise Data}
 
 \begin{verbatim}
@@ -28,4 +51,20 @@ insert into lots ( lot_id, quantity_of_vegatables, lot_name, veggie_id ) values 
 insert into lots ( lot_id, quantity_of_vegatables, lot_name, veggie_id ) values ( '10' , 500,  'grey', '10' ) ; 
 insert into lots ( lot_id, quantity_of_vegatables, lot_name, veggie_id ) values ( '11' , 375,  'magenta', '11' ) ; 
 insert into lots ( lot_id, quantity_of_vegatables, lot_name, veggie_id ) values ( '12' , 675,  'cyan', '20' ) ; 
+\end{verbatim}
+
+\begin{verbatim}
+Challenge 4:
+REPORT ON:
+a.	TOTAL AMOUNT OF ALL VEGATABLES ON THE FARM, ALL LOTS
+b.	LOT WITH MOST VEGATABLES
+c.	LOT WITH LEAST VEGATABLES
+d.	AVERAGE NUMBER OF VEGATABLES ACROSS ALL FIELDS.
+
+select sum (l.quantity_of_vegatables * v.veggie_price) 
+
+from lots as l, veggies as v
+
+where l.veggie_id = v.veggie_id
+
 \end{verbatim}

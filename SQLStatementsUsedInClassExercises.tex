@@ -1,0 +1,149 @@
+\section {This is a collection of SQL we developed in class exercises}
+
+\begin{verbatim}
+    INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A101', 'Smith', 'John', 'CPCT');
+INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A102', 'Jones', 'Mike', 'CPCT');
+INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A103', 'Smith', 'Susan', 'CPCT');
+INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A104', 'Bichon', 'Peanut', 'CPCT');
+INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A105', 'Smith', 'John', 'CPCT');
+INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A106', 'Kirk', 'James', 'CPCT');
+INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A107', 'Archer', 'Jonathan', 'CPCT');
+INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A108', 'Janeway', 'Catherine', 'CPCT');
+INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A109', 'Sisko', 'Benjamin', 'CPCT');
+INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A110', 'Pike', 'Christopher', 'CPCT');
+INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A111', 'Scott', 'Montgommery', 'CPCT');
+INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A112', 'Riker', 'William', 'CPCT');
+
+
+How to create the students table with DDL:
+CREATE TABLE students(
+studentid VARCHAR (20) NOT NULL,
+studentlastname VARCHAR (20) NOT NULL,
+studentfirstname VARCHAR (20) NOT NULL,
+programgroupname VARCHAR (20) NOT NULL,
+term VARCHAR (20) NOT NULL
+PRIMARY KEY (studentid)
+);
+
+CREATE TABLE classes(
+classid VARCHAR (20) NOT NULL,
+roomid VARCHAR (20) NOT NULL,
+datetimeid VARCHAR (20) NOT NULL,
+coursename VARCHAR (20) NOT NULL
+PRIMARY KEY (classid)
+);
+
+CREATE TABLE programgroup(
+pgid VARCHAR (20) NOT NULL,
+programgroupname VARCHAR(20) NOT NULL,
+sectionnumber VARCHAR (20) NOT NULL,
+classid VARCHAR (20) NOT NULL
+PRIMARY KEY (pgid)
+);
+
+How to rename a COLUMN
+USE CESVERSION2;
+GO
+EXEC sp_rename 'students.studentgroup' , 'programgroup';
+GO
+
+
+How to subtract the COUNTS of 2 Tables
+DECLARE @ThisYearCount BIGINT,
+        @LastYearCount BIGINT,
+        @Difference  BIGINT
+
+SELECT @ThisYearCount = COUNT(*) FROM ThisYear
+
+SELECT @LastYearCount = COUNT(*) FROM LastYear
+
+SET @Difference = @ThisYearCount - @LastYearCount
+
+Print @Difference
+
+
+How to delete a Column from a Table:
+
+ALTER TABLE Customers
+DROP COLUMN ContactName;
+
+
+create view CombinedData as 
+
+select this.Description, this.Type, this.bedroom , c.communityname, c.communitydata
+
+from ThisYear as this, communityinfo as c 
+
+where [sold price] < 600000 
+
+and this.Community = c.communityname;
+
+select * from CombinedData as cv where cv.bedroom  >3
+
+
+WEEK 3 Code:
+
+Farmer Joe Exercise:
+
+CREATE TABLE veggies (
+    veggie_id varchar(20),
+    cost money,
+    veggie_name varchar(20),
+    quantity int
+    PRIMARY KEY (veggie_id)
+);
+
+CREATE TABLE lot (
+    lot_id varchar(20),
+    veggie_id varchar(20),
+    lot_name varchar(20),
+    PRIMARY KEY (lot_id)
+);
+
+
+
+
+CREATE TABLE veggies(
+veggie_id varchar(20),
+veggie_price money,
+veggie_name varchar(20),
+veggie_type varchar(20)
+PRIMARY KEY (veggie_id)
+);
+
+How to print out all fields in ALL Tables in a Database:
+
+ SELECT TABLE_SCHEMA ,
+       TABLE_NAME ,
+       COLUMN_NAME ,
+       ORDINAL_POSITION ,
+       COLUMN_DEFAULT ,
+       DATA_TYPE ,
+       CHARACTER_MAXIMUM_LENGTH ,
+       NUMERIC_PRECISION ,
+       NUMERIC_PRECISION_RADIX ,
+       NUMERIC_SCALE ,
+       DATETIME_PRECISION
+FROM   INFORMATION_SCHEMA.COLUMNS;
+\end{verbatim}
+
+\begin{verbatim}
+    
+
+This example uses an expression and gives it a column alias.
+
+SELECT
+first_name,
+last_name,
+first_name || ' ' || last_name AS full_name
+FROM employee_test;
+
+This example uses a column alias on a function.
+
+SELECT
+last_name,
+hdt AS hire_date,
+ROUND(MONTHS_BETWEEN(SYSDATE, hdt),0) AS tenure_months
+FROM employee_test;
+
+\end{verbatim}
