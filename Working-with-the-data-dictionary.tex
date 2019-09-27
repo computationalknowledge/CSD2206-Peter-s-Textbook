@@ -1,0 +1,48 @@
+\newpage
+
+\section {Show all the stored procedures in a Database [MS SQL SERVER]}
+
+select * 
+from palswithpaws.information_schema.routines 
+where routine_type = 'PROCEDURE'
+
+\section {Show all the tables in a Database [MS SQL SERVER]}
+
+use PalsWithPaws; 
+SELECT  * 
+FROM    information_schema.tables;
+
+\section {Find Table By Column Name Using SQL Query}
+/* Find the tables having the specific column or the columns containing a phrase in the name. For such a need to find the tables having the column, you can query the sys.tables system table and joining the sys.columns system table. */
+
+\begin{verbatim}
+SELECT
+    sys.tables.name AS 'Table Name', 
+    sys.tables.object_id AS 'Object ID', 
+    sys.columns.name AS 'Column Name'
+FROM
+    sys.tables INNER JOIN sys.columns 
+        ON sys.tables.object_id = sys.columns.object_id
+WHERE
+    sys.columns.name LIKE '%ProductID%'
+ORDER BY 1;
+\end{verbatim}
+
+\section {Find the Database in which a Table is located}
+SELECT * 
+FROM  sys.tables 
+WHERE     name LIKE     '%product%'
+
+\begin{verbatim}
+    Another method to get the list of tables having the same column is by querying the sys.columns table along with the OBJECT_NAME built-in meta data function instead of using sys.column table. Here is the select command.
+
+SELECT
+    OBJECT_NAME(object_id) AS 'Table Name', 
+    object_id, 
+    name AS 'Column Name'
+FROM
+    sys.columns 
+WHERE
+    name LIKE '%ProductID%'
+
+\end{verbatim}

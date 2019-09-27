@@ -1,6 +1,7 @@
+\newpage
 \section {This is a collection of SQL we developed in class exercises}
 
-\begin{verbatim}
+\begin{lstlisting}
     INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A101', 'Smith', 'John', 'CPCT');
 INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A102', 'Jones', 'Mike', 'CPCT');
 INSERT INTO students ( studentid, studentlastname, studentfirstname, programgroupname ) VALUES ( 'A103', 'Smith', 'Susan', 'CPCT');
@@ -125,10 +126,7 @@ How to print out all fields in ALL Tables in a Database:
        NUMERIC_SCALE ,
        DATETIME_PRECISION
 FROM   INFORMATION_SCHEMA.COLUMNS;
-\end{verbatim}
 
-\begin{verbatim}
-    
 
 This example uses an expression and gives it a column alias.
 
@@ -146,4 +144,4 @@ hdt AS hire_date,
 ROUND(MONTHS_BETWEEN(SYSDATE, hdt),0) AS tenure_months
 FROM employee_test;
 
-\end{verbatim}
+\end{lstlisting}

@@ -1,0 +1,140 @@
+\newline
+\section {SQL Programming Formulations}
+
+\section {Using the PRINT command}
+\begin{lstlisting}[frame=single]
+PRINT 'Hello World';
+DECLARE @myvariable VARCHAR(40) = 'I like essentialSQL.'
+PRINT @myvariable
+DECLARE @row INT = 63;
+PRINT 'The value of row is ' + CAST(@row as VARCHAR);
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single]
+
+How to Use IF...THEN Logic in SQL Server
+
+SQL Server has a unique capability of allowing you to execute real-time programmatic logic on the values within your query. Based on those logical evaluations, you can generate various values as part of the returned data set.
+
+Using the CASE Statement
+This is most easily accomplished in all versions of SQL Server using the CASE statement, which acts as a logical IF...THEN...ELSE expression and returns various values depending on the result.
+
+In this example below, we want to return an additional locale column that specifies whether our book takes place in Middle-earth or regular old Earth.
+
+SELECT
+  CASE
+    WHEN
+      books.title = 'The Hobbit'
+        THEN
+          'Middle-earth'
+    WHEN
+      books.primary_author = 'Tolkien'
+        THEN
+          'Middle-earth'
+    ELSE
+      'Earth'
+  END AS locale,
+  books.*
+FROM
+  books
+Before we examine the special CASE aspect of this statement, let’s temporarily remove the CASE to notice that this is an extremely simple SELECT statement on the surface:
+
+SELECT
+  books.*
+FROM
+  books
+Therefore, let’s examine how the CASE section is structured and what logical behavior we’re performing.
+
+CASE
+  WHEN
+    books.title = 'The Hobbit'
+      THEN
+        'Middle-earth'
+  WHEN
+    books.primary_author = 'Tolkien'
+      THEN
+        'Middle-earth'
+  ELSE
+    'Earth'
+END AS locale
+To begin, we of initialize the CASE statement then specify under which conditions (WHEN) our CASE statement should evaluate a result. In this example, we’re examining the books.title and books.primary_author; if either fit our Tolkien-esque theme, THEN we return the value ‘Middle-earth.’ If neither fields match our search, we instead return the value of ‘Earth.’
+
+To rearrange the logic as a psuedo-code IF...THEN...ELSE statement, we’re simply asking SQL to evaluate:
+
+IF
+  title == 'The Hobbit' OR
+  primary_author == 'Tolkien'
+THEN
+  RETURN 'Middle-earth'
+ELSE
+  RETURN 'Earth'
+END
+Finally, it is critical to remember that a CASE statement must always be appended at the end with a matching END statement. In the above example, we’re also renaming the resulting value that is returned to locale, though that is certainly optional.
+
+Using the IIF Function
+If you are using a more modern version of SQL, it is useful to know that SQL Server 2012 introduced the very handy IIF function. IIF is a shorthand method for performing an IF...ELSE/CASE statement and returning one of two values, depending on the evaluation of the result.
+
+Restructuring our above example to use IIF is quite simple.
+
+SELECT
+  IIF(
+    books.title = 'The Hobbit' OR books.primary_author = 'Tolkien',
+    'Middle-earth',
+    'Earth')
+  AS locale,
+  books.*
+FROM
+  books
+With an IIF function, we largely replace a lot of the syntactical sugar from the CASE statement with a few simple comma-seperators to differentiate our arguments.
+
+Both CASE and IIF get the same job done, but if given the choice, IIF will generally be much simpler to use.
+
+\end{lstlisting}
+
+\newpage
+
+\begin{lstlisting}[frame=single]
+
+SQL Server: FOR LOOP
+Learn how to simulate the FOR LOOP in SQL Server (Transact-SQL) with syntax and examples.
+
+TIP: Since the FOR LOOP does not exist in SQL Server, this page describes how to simulate a FOR LOOP using a WHILE LOOP.
+Description
+In SQL Server, there is no FOR LOOP. However, you simulate the FOR LOOP using the WHILE LOOP.
+
+Syntax
+The syntax to simulate the FOR Loop in SQL Server (Transact-SQL) is:
+
+DECLARE @cnt INT = 0;
+
+WHILE @cnt < cnt_total
+BEGIN
+   {...statements...}
+   SET @cnt = @cnt + 1;
+END;
+Parameters or Arguments
+cnt_total
+The number of times that you want the simulated FOR LOOP (ie: WHILE LOOP) to execute.
+statements
+The statements of code to execute each pass through the loop.
+Note
+You can simulate the FOR LOOP in SQL Server (Transact-SQL) using the WHILE LOOP.
+Example
+Let's look at an example that shows how to simulate the FOR LOOP in SQL Server (Transact-SQL) using the WHILE LOOP.
+
+For example:
+
+DECLARE @cnt INT = 0;
+
+WHILE @cnt < 10
+BEGIN
+   PRINT 'Inside simulated FOR LOOP on TechOnTheNet.com';
+   SET @cnt = @cnt + 1;
+END;
+
+PRINT 'Done simulated FOR LOOP on TechOnTheNet.com';
+GO
+In this WHILE LOOP example, the loop would terminate once @cnt reaches 10.
+
+
+\end{lstlisting}    

@@ -1,3 +1,4 @@
+\newpage
 \section  * {Farmer Joe}
 \includegraphics[scale=0.6]{images/FarmerJoe.png}
 
@@ -23,7 +24,7 @@ PRIMARY KEY (veggie_id)
 
 \section {Farmer Joe Exercise Data}
 
-\begin{verbatim}
+\begin{lstlisting}
 insert into veggies ( veggie_id, veggie_price, veggie_name, veggie_type  ) values ( '2' , 11, 'Peas', 'root' ) ;
 insert into veggies ( veggie_id, veggie_price, veggie_name, veggie_type  ) values ( '3' , 8,  'Tomatos', 'root' ) ;
 insert into veggies ( veggie_id, veggie_price, veggie_name, veggie_type  ) values ( '4' , 3,  'Corn', 'root' ) ;
@@ -36,9 +37,8 @@ insert into veggies ( veggie_id, veggie_price, veggie_name, veggie_type  ) value
 insert into veggies ( veggie_id, veggie_price, veggie_name, veggie_type  ) values ( '10' , 12,  'Brussel Sprouts', 'legumes' ) ;
 insert into veggies ( veggie_id, veggie_price, veggie_name, veggie_type  ) values ( '11' , 5,  'Brocelli', 'legumes' ) ;
 insert into veggies ( veggie_id, veggie_price, veggie_name, veggie_type  ) values ( '12' , 6,  'Spinach', 'legumes') ;
-\end{verbatim}
 
-\begin{verbatim}
+
 insert into lots ( lot_id, quantity_of_vegatables, lot_name, veggie_id ) values ( '1' , 800,  'red', '1' ) ; 
 insert into lots ( lot_id, quantity_of_vegatables, lot_name, veggie_id ) values ( '2' , 500,  'orange', '2' ) ; 
 insert into lots ( lot_id, quantity_of_vegatables, lot_name, veggie_id ) values ( '3' , 300,  'yellow', '3' ) ; 
@@ -51,9 +51,8 @@ insert into lots ( lot_id, quantity_of_vegatables, lot_name, veggie_id ) values 
 insert into lots ( lot_id, quantity_of_vegatables, lot_name, veggie_id ) values ( '10' , 500,  'grey', '10' ) ; 
 insert into lots ( lot_id, quantity_of_vegatables, lot_name, veggie_id ) values ( '11' , 375,  'magenta', '11' ) ; 
 insert into lots ( lot_id, quantity_of_vegatables, lot_name, veggie_id ) values ( '12' , 675,  'cyan', '20' ) ; 
-\end{verbatim}
 
-\begin{verbatim}
+
 Challenge 4:
 REPORT ON:
 a.	TOTAL AMOUNT OF ALL VEGATABLES ON THE FARM, ALL LOTS
@@ -67,4 +66,4 @@ from lots as l, veggies as v
 
 where l.veggie_id = v.veggie_id
 
-\end{verbatim}
+\end{lstlisting}

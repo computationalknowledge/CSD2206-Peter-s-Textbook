@@ -1,0 +1,93 @@
+\newline
+\section {Using Cursor in SQL Server Stored Procedures}
+% https://www.aspsnippets.com/Articles/Using-Cursor-in-SQL-Server-Stored-Procedure-with-example.aspx
+
+What are Cursors in SQL Server?
+A CURSOR IS A PACKAGING MECHANISM THAT ALLOWS US TO MOVE DATA FROM ON QUERY TO ANOTHER
+
+Cursor is a Database object which allows us to process each row and manipulate its data. A Cursor is always associated with a Select Query and it will process each row returned by the Select Query one by one.
+Using Cursor we can verify each row data, modify it or perform calculations which are not possible when we get all records at once.
+A simple example would be a case where you have records of Employees and you need to calculate Salary of each employee after deducting Taxes and Leaves.
+ 
+ 
+What is the syntax for writing Cursors in SQL Server?
+Below is the syntax for writing a Cursor. The very first thing is to declare some variables based on the columns you are fetching in your Select Query.
+Note: In this article I am considering only READ_ONLY Cursors.
+Then you need to declare the Cursor by giving it a name and setting its type as READ_ONLY and along with the FOR keyword you need to write the Select Query which will return the records you need to process.
+Once the Cursor is setup, we need to open it using the OPEN command and then the first record is fetched and saved into the variable.
+Whenever a record is fetched the @@FETCH_STATUS has value 0 and as soon as all the records returned by the Select Query are fetched, its value changes to -1.
+A Cursor is associated with a WHILE LOOP which executes until the @@FETCH_STATUS has value 0.
+Inside the WHILE LOOP, the processing is done for the current record and then again the next record is fetched and this process continues until @@FETCH_STATUS is 0.
+Finally the Cursor is closed and deallocated using CLOSE and DEALLOCATE commands respectively.
+Note: It is very important to DEALLOCATE a Cursor as otherwise it will stay in database and when you declare a Cursor with same name again, SQL Server will throw an error: A cursor with the name 'Cursor1' already exists.
+ 
+Using Cursor in SQL Server Stored Procedure with example
+ 
+ 
+How to write and use Cursors in SQL Server Stored Procedure?
+Following is an example of simple Cursor in SQL Server Stored Procedure which prints all the records of Customers table
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE PrintCustomers_Cursor
+AS
+BEGIN
+      SET NOCOUNT ON;
+ 
+      --DECLARE THE VARIABLES FOR HOLDING DATA.
+      DECLARE @CustomerId INT
+             ,@Name VARCHAR(100)
+             ,@Country VARCHAR(100)
+ 
+      --DECLARE AND SET COUNTER.
+      DECLARE @Counter INT
+      SET @Counter = 1
+ 
+      --DECLARE THE CURSOR FOR A QUERY.
+      DECLARE PrintCustomers CURSOR READ_ONLY
+      FOR
+      SELECT CustomerId, Name, Country
+      FROM Customers
+ 
+      --OPEN CURSOR.
+      OPEN PrintCustomers
+ 
+      --FETCH THE RECORD INTO THE VARIABLES.
+      FETCH NEXT FROM PrintCustomers INTO
+      @CustomerId, @Name, @Country
+ 
+      --LOOP UNTIL RECORDS ARE AVAILABLE.
+      WHILE @@FETCH_STATUS = 0
+      BEGIN
+             IF @Counter = 1
+             BEGIN
+                        PRINT 'CustomerID' + CHAR(9) + 'Name' + CHAR(9) + CHAR(9) + CHAR(9) + 'Country'
+                        PRINT '------------------------------------'
+             END
+ 
+             --PRINT CURRENT RECORD.
+             PRINT CAST(@CustomerId AS VARCHAR(10)) + CHAR(9) + CHAR(9) + CHAR(9) + @Name + CHAR(9) + @Country
+    
+             --INCREMENT COUNTER.
+             SET @Counter = @Counter + 1
+ 
+             --FETCH THE NEXT RECORD INTO THE VARIABLES.
+             FETCH NEXT FROM PrintCustomers INTO
+             @CustomerId, @Name, @Country
+      END
+ 
+      --CLOSE THE CURSOR.
+      CLOSE PrintCustomers
+      DEALLOCATE PrintCustomers
+END
+GO
+ 
+The following screenshot displays the records printed by the above Cursor.
+Using Cursor in SQL Server Stored Procedure with example
+You can also checkout an advanced SQL Server Cursor that sends email in my article Automated Email Notifications using SQL Server Job Scheduler.
+ 
+ 
+Disadvantages of Cursor
+The major disadvantage of a Cursor is its performance issue. A Cursor can be really slow when performing operations on large number of records and your SQL Query may take minutes to execute and produce results.
+

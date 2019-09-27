@@ -1,0 +1,81 @@
+\newpage
+\section{Dynamic SQL}
+
+You can't use a variable for table name in the insert. You have to build that query dynamically too
+\url{https://stackoverflow.com/questions/29544132/msg-1087-level-16-state-1-line-25-must-declare-the-table-variable}
+
+\begin{lstlisting}
+
+I am creating a stored procedure and in it I am creating a new table that appends two variables, an ID and getdate() to the table name when it is create. i.e tablename_@id_getdate(). So the table name will change depending on which id and on what date it is run. I am doing this with Dynamic SQL. Then after the table is created, I need to insert records to it from a temp table created earlier in the procedure.(not shown). Since I won't know the name of the table until it is created, I am trying to insert into using the @tablename variable.
+
+I've tried the below script and am getting this error: Msg 1087, Level 16, State 1, Line 25 Must declare the table variable "@TABLENAME".
+
+This procedure will run every other day or so and the affected records of the run will be stored in the tablename_@id_getdate() table created during the execution of the stored procedure.
+
+Is there another way of doing this or is my syntax just wrong? Thanks for your help.
+
+IF EXISTS (SELECT 1 FROM #DUPS2)
+BEGIN
+
+DECLARE @TableName NVARCHAR(128)
+DECLARE @SQLString NVARCHAR(MAX)
+    ,@DATE VARCHAR (10)
+    ,@BN SMALLINT
+
+SET @BN = 108       
+SET @DATE = CONVERT(VARCHAR(10),GETDATE(),112)
+
+SET @TABLENAME = 'schema.dbo.tableName_' + CAST (@BN AS VARCHAR) +'_'+ @DATE 
+
+SET @SQLString = 'CREATE TABLE '+' '+@TABLENAME+ ' '
+        + '( ' + 'BUSINESS_NAME' + ' ' +'VARCHAR(120)' +' '+'NULL,' +
+             'CLAIM_ID' + ' ' +'NVARCHAR(120)' +' '+'NULL,' + 
+             'CONTACT_ID' + ' ' +'INT' +' '+'NULL,' +
+             'COUNT_OF_DUPES' + ' ' +'NVARCHAR(5)' +' '+'NULL' +') ON     [PRIMARY] '
+
+
+EXEC @SQLString
+
+---TABLE IS CREATED AND NOW WE INSERT RECORDS TO IT
+
+INSERT INTO @TABLENAME  --the table name just created.
+SELECT D.*  
+FROM #DUPS2 D     --contains duplicate contact records found
+ JOIN TABLE1  T1 WITH (NOLOCK)
+ ON D.CONTACT_ID = T1.CONTACT_ID
+WHERE T1. active_ind = 1 
+
+END
+sql sql-server-2008 stored-procedures
+shareimprove this question
+asked Apr 9 '15 at 16:34
+
+OracleNewbie
+1444 bronze badges
+You can't use a variable for table name in the insert. You have to build that query dynamically too. – Guffa Apr 9 '15 at 16:40 
+add a comment
+1 Answer
+activeoldestvotes
+
+0
+
+As Guffa stated in order to make what you have work, you will need to change the last insert query into a dynamic query like your first one.
+
+Or my suggestion would be to rewrite it using a select into query like the following, but depending on your needs/restrictions that may not be a good idea.
+
+SET @SQLString = 'SELECT D.* ' +
+                 ' INTO ' + @TABLENAME +  --the table name just created.
+                 ' FROM #DUPS2 D ' +    --contains duplicate contact records found
+                 ' JOIN TABLE1  T1 WITH (NOLOCK) ' +
+                 ' ON D.CONTACT_ID = T1.CONTACT_ID ' +
+                 ' WHERE T1. active_ind = 1 '
+This does run the risk of not getting the right column value types that you want, but that could be done by using CAST or CONVERT on the columns in the select part of the statement.
+
+shareimprove this answer
+answered Apr 9 '15 at 16:56
+
+Zoldren
+5633 bronze badges
+Thanks Guffa and Zoldren! This worked! Note on my first execution I got an error Msg 203, Level 16, State 2, Line 73 (dynamic sql....) is not a invalid identifier. I needed to execute via EXEC (@SQLString) not EXEC @SQLString with out parentheses. :) – OracleNewbie Apr 9 '15 at 17:22 
+
+\end{lstlisting}
