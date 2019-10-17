@@ -1,6 +1,17 @@
 \newpage
 \section {SQL Programming Formulations}
 
+\sample SQL Code using LATEX verbbatim:
+
+\begin{verbatim}
+    -- The following query can be used to sum the stock yet to be picked for all stock items.
+
+DECLARE @StartingTime datetime2(7) = SYSDATETIME();
+
+SELECT ol.StockItemID, [Description], SUM(Quantity - PickedQuantity) AS AllocatedQuantity
+FROM Sales.OrderLines AS ol WITH (NOLOCK)
+\end{verbatim}
+
 \section {Using the PRINT command}
 \begin{lstlisting}[frame=single]
 PRINT 'Hello World';
